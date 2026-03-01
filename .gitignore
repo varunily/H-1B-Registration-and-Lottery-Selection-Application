@@ -1,0 +1,15 @@
+# macOS
+.DS_Store
+
+# Java
+backend/target/
+
+# Local env files
+.env
+
+# Runtime exports
+backend/exports/
+
+# IDE
+.idea/
+.vscode/

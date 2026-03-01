@@ -1,0 +1,273 @@
+:root {
+  --bg: #f6f8f3;
+  --surface: #ffffff;
+  --surface-2: #f0f4ea;
+  --text: #19231a;
+  --muted: #55635a;
+  --accent: #15616d;
+  --accent-strong: #0e4b54;
+  --danger: #9b2c2c;
+  --line: #d7dfd3;
+  --radius: 16px;
+  --shadow: 0 12px 40px rgba(12, 45, 30, 0.09);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "IBM Plex Sans", sans-serif;
+  color: var(--text);
+  background:
+      radial-gradient(circle at 5% 5%, rgba(74, 140, 117, 0.15), transparent 35%),
+      radial-gradient(circle at 95% 20%, rgba(21, 97, 109, 0.14), transparent 40%),
+      var(--bg);
+}
+
+h1, h2, h3 {
+  font-family: "Space Grotesk", sans-serif;
+  letter-spacing: -0.02em;
+  margin-top: 0;
+}
+
+.bg-shape {
+  position: fixed;
+  width: 30vmax;
+  height: 30vmax;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.25;
+  z-index: -1;
+}
+
+.shape-a {
+  top: -5vmax;
+  right: -10vmax;
+  background: #7ecb95;
+}
+
+.shape-b {
+  bottom: -12vmax;
+  left: -8vmax;
+  background: #56b3a7;
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1rem;
+  margin: 1.5rem;
+}
+
+.hero-content,
+.workflow {
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.95), rgba(235, 243, 233, 0.9));
+  border: 1px solid rgba(215, 223, 211, 0.8);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.25rem;
+  animation: rise-in 0.5s ease;
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  color: var(--accent);
+  letter-spacing: 0.08em;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.subtitle {
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.hero-controls {
+  display: flex;
+  gap: 0.75rem;
+  align-items: end;
+}
+
+.hero-controls label {
+  flex: 1;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 1.5rem;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1rem;
+  grid-column: span 4;
+  animation: rise-in 0.5s ease;
+}
+
+.card.wide {
+  grid-column: span 12;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.row {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+input,
+select,
+button,
+textarea {
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  font-family: inherit;
+  font-size: 0.95rem;
+  padding: 0.65rem 0.75rem;
+}
+
+input:focus,
+select:focus,
+button:focus,
+textarea:focus {
+  outline: 2px solid rgba(21, 97, 109, 0.25);
+  outline-offset: 1px;
+}
+
+button {
+  background: var(--accent);
+  color: white;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: transform 120ms ease, background 120ms ease;
+}
+
+button:hover {
+  background: var(--accent-strong);
+  transform: translateY(-1px);
+}
+
+button.secondary {
+  background: #e8ece5;
+  color: var(--text);
+}
+
+button.secondary:hover {
+  background: #d8ddd6;
+}
+
+.panel {
+  margin-top: 0.9rem;
+  background: var(--surface-2);
+  border-radius: 10px;
+  padding: 0.75rem;
+  border: 1px solid var(--line);
+  min-height: 3.2rem;
+}
+
+.metrics-grid {
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+}
+
+.metric {
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 0.6rem;
+}
+
+.metric .label {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.metric .value {
+  margin-top: 0.2rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+  padding: 0.55rem;
+  font-size: 0.9rem;
+}
+
+pre {
+  background: #eef4ec;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  margin: 0;
+  padding: 0.8rem;
+  max-height: 280px;
+  overflow: auto;
+  font-size: 0.82rem;
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 1080px) {
+  .hero {
+    grid-template-columns: 1fr;
+  }
+
+  .card {
+    grid-column: span 6;
+  }
+}
+
+@media (max-width: 760px) {
+  .grid {
+    grid-template-columns: 1fr;
+    margin: 1rem;
+  }
+
+  .hero {
+    margin: 1rem;
+  }
+
+  .card,
+  .card.wide {
+    grid-column: span 1;
+  }
+
+  .hero-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

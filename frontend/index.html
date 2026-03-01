@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>H-1B Employer Registration & Lottery Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="bg-shape shape-a"></div>
+  <div class="bg-shape shape-b"></div>
+
+  <header class="hero">
+    <div class="hero-content">
+      <p class="eyebrow">Enterprise Workflow Platform</p>
+      <h1>H-1B Employer Registration and Lottery Workflow</h1>
+      <p class="subtitle">
+        Register employers, onboard beneficiaries, submit cap registrations, run deterministic lottery draws,
+        and export compliance snapshots for audit and data engineering pipelines.
+      </p>
+      <div class="hero-controls">
+        <label>
+          API Base URL
+          <input id="apiBaseInput" type="text" placeholder="http://localhost:8080" />
+        </label>
+        <button id="saveApiBaseBtn" type="button">Save API URL</button>
+      </div>
+    </div>
+    <div class="workflow">
+      <h2>Workflow</h2>
+      <ol>
+        <li>Employer registration</li>
+        <li>Beneficiary onboarding</li>
+        <li>Cap registration submission</li>
+        <li>Lottery execution (Masters + Regular)</li>
+        <li>Selection analytics and exports</li>
+      </ol>
+    </div>
+  </header>
+
+  <main class="grid">
+    <section class="card">
+      <h3>1) Register Employer</h3>
+      <form id="employerForm" class="stack">
+        <input name="legalName" placeholder="Legal name" required />
+        <input name="fein" placeholder="FEIN (9 digits)" pattern="[0-9]{9}" required />
+        <input name="contactEmail" placeholder="Contact email" type="email" required />
+        <button type="submit">Create Employer</button>
+      </form>
+    </section>
+
+    <section class="card">
+      <h3>2) Add Beneficiary</h3>
+      <form id="beneficiaryForm" class="stack">
+        <select name="employerId" id="beneficiaryEmployerSelect" required></select>
+        <input name="firstName" placeholder="First name" required />
+        <input name="lastName" placeholder="Last name" required />
+        <input name="email" placeholder="Beneficiary email" type="email" required />
+        <input name="countryOfCitizenship" placeholder="Country of citizenship" required />
+        <select name="highestEducation" required>
+          <option value="BACHELORS">Bachelors</option>
+          <option value="MASTERS">Masters</option>
+          <option value="PHD">PhD</option>
+          <option value="PROFESSIONAL">Professional</option>
+          <option value="OTHER">Other</option>
+        </select>
+        <button type="submit">Create Beneficiary</button>
+      </form>
+    </section>
+
+    <section class="card">
+      <h3>3) Create Registration</h3>
+      <form id="registrationForm" class="stack">
+        <select name="employerId" id="registrationEmployerSelect" required></select>
+        <select name="beneficiaryId" id="registrationBeneficiarySelect" required></select>
+        <input name="fiscalYear" type="number" min="2025" value="2027" required />
+        <input name="offeredSalary" type="number" min="1" step="0.01" value="120000" required />
+        <input name="workLocation" placeholder="Work location" required />
+        <select name="status">
+          <option value="DRAFT">Draft</option>
+          <option value="SUBMITTED">Submit immediately</option>
+        </select>
+        <button type="submit">Create Registration</button>
+      </form>
+    </section>
+
+    <section class="card">
+      <h3>4) Manage Registration Status</h3>
+      <form id="manageRegistrationForm" class="stack">
+        <input name="fiscalYear" type="number" min="2025" value="2027" required />
+        <button type="button" id="loadRegistrationsBtn">Load Registrations</button>
+        <select name="registrationId" id="registrationSelect" required></select>
+        <div class="row">
+          <button type="button" id="submitRegistrationBtn">Submit Draft</button>
+          <button type="button" class="secondary" id="withdrawRegistrationBtn">Withdraw</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="card">
+      <h3>5) Run Lottery</h3>
+      <form id="lotteryForm" class="stack">
+        <input name="fiscalYear" type="number" min="2025" value="2027" required />
+        <input name="regularCap" type="number" min="1" value="65000" required />
+        <input name="mastersCap" type="number" min="0" value="20000" required />
+        <input name="seed" type="number" placeholder="Optional seed for reproducible draw" />
+        <button type="submit">Run Lottery</button>
+      </form>
+      <div class="panel" id="lotteryResultPanel"></div>
+    </section>
+
+    <section class="card">
+      <h3>6) Dashboard & Export</h3>
+      <form id="analyticsForm" class="stack">
+        <input name="fiscalYear" type="number" min="2025" value="2027" required />
+        <div class="row">
+          <button type="button" id="refreshAnalyticsBtn">Refresh Metrics</button>
+          <button type="button" class="secondary" id="exportSnapshotBtn">Export CSV</button>
+        </div>
+      </form>
+      <div id="metricsGrid" class="metrics-grid"></div>
+    </section>
+
+    <section class="card wide">
+      <h3>Employer Selection Analytics</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Employer</th>
+            <th>Fiscal Year</th>
+            <th>Total</th>
+            <th>Selected</th>
+            <th>Selection Rate</th>
+          </tr>
+        </thead>
+        <tbody id="analyticsTableBody"></tbody>
+      </table>
+    </section>
+
+    <section class="card wide">
+      <h3>Registrations (Current Fiscal Year)</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Employer</th>
+            <th>Beneficiary</th>
+            <th>Status</th>
+            <th>Masters Eligible</th>
+          </tr>
+        </thead>
+        <tbody id="registrationTableBody"></tbody>
+      </table>
+    </section>
+
+    <section class="card wide">
+      <h3>Activity Log</h3>
+      <pre id="activityLog"></pre>
+    </section>
+  </main>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
