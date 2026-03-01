@@ -1,4 +1,4 @@
-# H-1B Employer Registration and Lottery Application
+# H-1B  Registration and Lottery Application
 
 Production-style end-to-end application for employers to:
 - register their company,
